@@ -1,0 +1,53 @@
+{
+  "name": "my-coding-agent",
+  "displayName": "My Coding Agent",
+  "publisher": "personal",
+  "description": "Mobile-friendly coding agent for VS Code and code-server",
+  "version": "0.1.0",
+  "license": "MIT",
+  "engines": { "vscode": "^1.90.0" },
+  "categories": ["Other"],
+  "extensionKind": ["workspace"],
+  "activationEvents": ["onView:myCodingAgent.chat", "onCommand:myCodingAgent.open"],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "myCodingAgent.open", "title": "My Coding Agent: Open" },
+      { "command": "myCodingAgent.setApiKey", "title": "My Coding Agent: Set OpenAI API Key" }
+    ],
+    "viewsContainers": {
+      "activitybar": [{ "id": "myCodingAgent", "title": "Agent", "icon": "media/agent.svg" }]
+    },
+    "views": { "myCodingAgent": [{ "id": "myCodingAgent.chat", "name": "Coding Agent", "type": "webview" }] },
+    "configuration": {
+      "title": "My Coding Agent",
+      "properties": {
+        "myCodingAgent.model": {
+          "type": "string",
+          "default": "gpt-5.4",
+          "description": "OpenAI Responses API model name"
+        },
+        "myCodingAgent.maxSteps": {
+          "type": "integer",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 60,
+          "description": "Maximum model/tool rounds per task"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsc --noEmit -p . && esbuild src/extension.ts --bundle --platform=node --target=node20 --format=cjs --external:vscode --outfile=dist/extension.js",
+    "check": "tsc --noEmit -p .",
+    "package": "npm run build && vsce package --no-dependencies"
+  },
+  "dependencies": { "openai": "^6.0.0" },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,8 @@
+src/**
+node_modules/**
+dist/agent.js
+*.vsix
+tsconfig.json
+package-lock.json
+.gitignore
+.vscode/**
